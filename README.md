@@ -20,7 +20,7 @@ Preliminary Figures
 ------------------
 (INSERT FIGURES HERE)
 Scatterplot of Birds vs Mammals
-[](figures/BirdsvMammals.png)
+![](figures/BirdsvMammals.png)
 
 Using This Project
 -----------------
