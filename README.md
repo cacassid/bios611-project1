@@ -19,6 +19,7 @@ The datasets include information about each of the US National Parks, including 
 Preliminary Figures
 ------------------
 (INSERT FIGURES HERE)
+Scatterplot of Birds vs Mammals
 [](figures/BirdsvMammals.png)
 
 Using This Project
