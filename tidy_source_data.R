@@ -1,9 +1,57 @@
 library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 species <- read.csv("./source_data/species.csv")
 parks <- read.csv("./source_data/datasets_670_1306_parks.csv")
 
 ## clean datasets 
+parks$Acres <- as.numeric(parks$Acres)
+parks$Latitude <- as.numeric(parks$Latitude)
+parks$Longitude <- as.numeric(parks$Longitude)
+
+#generate counts of species types for each park
+species_counts_acadia <- species %>% filter(Park.Name == "Acadia National Park") %>% 
+  group_by(Category) %>% count()
+
+species_counts_arches <- species %>% filter(Park.Name == "Arches National Park") %>% 
+  group_by(Category) %>% count()
+
+species_counts_channel <- species %>% filter(Park.Name == "Channel Islands National Park") %>% 
+  group_by(Category) %>% count()
+
+s1 <- species %>% group_by(Park.Name, Category) %>% tally()
+
+species_counts_all <- s1 %>% spread(data=s1, key=Category, value=n, drop = FALSE, fill = 0)
+
+#convert to numeric 
+species_counts_all$Algae <- as.numeric(as.character(species_counts_all$Algae))
+species_counts_all$Amphibian <- as.numeric(as.character(species_counts_all$Amphibian))
+species_counts_all$Bird <- as.numeric(as.character(species_counts_all$Bird))
+species_counts_all$`Crab/Lobster/Shrimp` <- as.numeric(as.character(species_counts_all$`Crab/Lobster/Shrimp`))
+species_counts_all$Fish <- as.numeric(as.character(species_counts_all$Fish))
+species_counts_all$Fungi <- as.numeric(as.character(species_counts_all$Fungi))
+species_counts_all$Insect <- as.numeric(as.character(species_counts_all$Insect))
+species_counts_all$Invertebrate <- as.numeric(as.character(species_counts_all$Invertebrate))
+species_counts_all$Mammal <- as.numeric(as.character(species_counts_all$Mammal))
+species_counts_all$`Nonvascular Plant` <- as.numeric(as.character(species_counts_all$`Nonvascular Plant`))
+species_counts_all$Reptile <- as.numeric(as.character(species_counts_all$Reptile))
+species_counts_all$`Slug/Snail` <- as.numeric(as.character(species_counts_all$`Slug/Snail`))
+species_counts_all$`Spider/Scorpion` <- as.numeric(as.character(species_counts_all$`Spider/Scorpion`))
+species_counts_all$`Vascular Plant` <- as.numeric(as.character(species_counts_all$`Vascular Plant`))
+
+
+#replace NA with 0
+species_counts_all[is.na(species_counts_all)] <- 0
+
+#scatterplots
+ggplot(species_counts_all, aes(x=Mammal, y=Bird)) + geom_point()
+ggplot(species_counts_all, aes(x=Algae, y=Bird)) + geom_point()
+ggplot(species_counts_all, aes(x=Fish, y=Bird)) + geom_point()
+
+
 
 write.csv(species, "derived_data/species.csv")
 write.csv(parks, "derived_data/datasets_670_1306_parks.csv")
+
+###added 9/1/20
