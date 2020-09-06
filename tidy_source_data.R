@@ -22,7 +22,7 @@ species_counts_channel <- species %>% filter(Park.Name == "Channel Islands Natio
 
 s1 <- species %>% group_by(Park.Name, Category) %>% tally()
 
-species_counts_all <- s1 %>% spread(data=s1, key=Category, value=n, drop = FALSE, fill = 0)
+species_counts_all <- s1 %>% spread(data=s1, key=Category, value=n)
 
 #convert to numeric 
 species_counts_all$Algae <- as.numeric(as.character(species_counts_all$Algae))
@@ -43,6 +43,19 @@ species_counts_all$`Vascular Plant` <- as.numeric(as.character(species_counts_al
 
 #replace NA with 0
 species_counts_all[is.na(species_counts_all)] <- 0
+
+#merge species counts w/ size data
+counts_area <- left_join(species_counts_all, parks)
+#make small, medium, large park size variable
+#get tertiles
+quantile(counts_area$Acres, c(.25, .50, .75)) 
+counts_area <- counts_area %>% mutate(counts_area$Size = ifelse(counts_area$Acres > 323431, "Small", "Large"))
+counts_area_sl <- counts_area %>% mutate(Size = Acres)
+counts_area_sl$Size <- ifelse(counts_area$Acres < 69010.5, "Small", ifelse(counts_area$Acres < 238764.5, 
+                                                                           "Medium", ifelse(counts_area$Acres < 817360.2, "Large", "Extra Large")))
+
+
+
 
 #scatterplots
 ggplot(species_counts_all, aes(x=Mammal, y=Bird)) + geom_point()
