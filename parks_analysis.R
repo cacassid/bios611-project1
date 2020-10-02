@@ -1,13 +1,19 @@
 #Analysis of parks data set
 library(ggplot2)
 library(ggpubr)
+library(corrplot)
 library(jtools)
 library(ggstance)
 library(broom.mixed)
 #install.packages("jtools")
 #install.packages("ggstance")
 #install.packages("broom.mixed")
-install.packages("ggpubr")
+#install.packages("corrplot")
+#install.packages("ggpubr")
+
+#correlation matrix
+
+
 
 #scatterplots
 scatter1 <- ggplot(counts_area_sl, aes(x=Mammal, y=Bird, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
@@ -21,6 +27,12 @@ scatter2 <- ggplot(counts_area_sl, aes(x=Insect, y=Bird, size = Acres)) + geom_p
   ggtitle("Number of Insect Species vs Bird Species") +
   geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
 scatter2
+
+scatter3 <- ggplot(counts_area_sl, aes(x=Amphibian, y=Fish, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
+  xlab("Number of Insect Species") + ylab("Number of Bird Species") + 
+  ggtitle("Number of Insect Species vs Bird Species") +
+  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
+scatter3
 
 ggplot(species_counts_all, aes(x=Reptile, y=Fish)) + geom_point()
 ggplot(species_counts_all, aes(x=Algae, y=Bird)) + geom_point()
@@ -52,9 +64,6 @@ lat_reptile <- ggplot(counts_area_sl, aes(x=LatCat2, y = Reptile)) +
 lat_fish <- ggplot(counts_area_sl, aes(x=LatCat2, y = Fish)) + 
   geom_bar(stat = "identity", fill = "#3A3B99") +
   xlab("Latitude") + ylab("Number of Fish Species")
-ggplot(counts_area_sl, aes(x=LatCat2, y = `Vascular Plant`)) + geom_bar(stat = "identity")
-ggplot(counts_area_sl, aes(x=LatCat2, y = `Nonvascular Plant`)) + geom_bar(stat = "identity")
-
 lat_figure <- ggarrange(lat_mammal, lat_bird, lat_reptile, lat_fish,
                         labels = c("A", "B", "C", "D"),
                         ncol = 2, nrow = 2)
