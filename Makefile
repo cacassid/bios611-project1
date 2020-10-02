@@ -28,4 +28,14 @@ figures/scatter2.png figures/scatter2.rds:\
  derived_data/counts_area_sl.csv\
  scatter_figures.R
 	Rscript scatter_figures.R
+	
+figures/dot_plot_e.png figures/dot_plot_e.rds:\
+ derived_data/conservation_park_info.csv\
+ dot_figures.R
+	Rscript dot_figures.R
+	
+figures/dot_plot_c.png figures/dot_plot_c.rds:\
+ derived_data/conservation_park_info.csv\
+ dot_figures.R
+	Rscript dot_figures.R
 
