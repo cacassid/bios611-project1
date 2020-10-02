@@ -7,12 +7,12 @@ library(ggstance)
 library(broom.mixed)
 library(scales)
 library(olsrr)
-#install.packages("jtools")
-#install.packages("ggstance")
-#install.packages("broom.mixed")
-#install.packages("corrplot")
-#install.packages("ggpubr")
-#install.packages("olsrr")
+install.packages("jtools")
+install.packages("ggstance")
+install.packages("broom.mixed")
+install.packages("corrplot")
+install.packages("ggpubr")
+install.packages("olsrr")
 
 #correlation matrix
 
