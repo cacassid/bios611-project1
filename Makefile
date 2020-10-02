@@ -8,7 +8,6 @@ parks_report.pdf:\
  figures/scatter2.rds
 	R -e "rmarkdown::render('parks_report.Rmd', output_format = 'pdf_document')"
 	
- 
 derived_data/counts_area_sl.csv:\
  source_data/species.csv\
  source_data/datasets_670_1306_parks.csv\
@@ -30,8 +29,3 @@ figures/scatter2.png figures/scatter2.rds:\
  scatter_figures.R
 	Rscript scatter_figures.R
 
-derived_data/species.csv derived_data/parks.csv:\
- source_data/species.csv\
- source_data/datasets_670_1306_parks.csv\
- tidy_source_data.R
-	Rscript tidy_source_data.R
