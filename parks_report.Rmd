@@ -1,0 +1,19 @@
+---
+title: "Biodiversity in National Parks"
+author: "Caitlin Cassidy"
+date: "10/1/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction to this Project
+The United States has 62 National Parks. Data on 56 of these parks was provided by the National Park Service. Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems.
+
+In this project, we will ????
+
+## Density of Species
+
