@@ -22,8 +22,8 @@ In this project, we will ????
 The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, fish, plants and other types of organisms. Since these parks are located all over the U.S. the parks will vary in terms of what species and how many they are home to. 
 
 If we consider the number of unique species for different ranges of latitude, we can see how many species live in each range of latitude.
-```{r latitude plot}
-#plot(lat_figure)
+```{r latitude_plot, fig.width=10, fig.height=10}
+readRDS("figures/lat_figure.rds")
 ```
 By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live.
 The number of unique fish species, however, does not follow this same pattern. While more fish species live in low latitudes than middle or high latitudes, the distribution is more even across all latitudes than the distribution of the other species.
@@ -34,7 +34,7 @@ In general, from these figures we can see that parks at middle latitudes have a 
 ## Relationships Between Species
 In many ecosystems, the number of birds and mammals are positively correlated (cite).
 
-```{r mammals scatterplots}
+```{r mammals_scatterplots}
 #plot(scatter1)
 #plot(scatter5)
 ```
@@ -48,22 +48,18 @@ The second scatterplot shows a negative association between the number of mammal
 Is it possible to predict the number of mammal species in a park with reasonable accuracy?
 To answer this question, I used variable selection techniques to __. 
 
+
 ## Conservation Status of Species
 dot plot
 make df of park regions 
-```{r mammals scatterplots}
-plot(dot_plot_e)
-plot(dot_plot_c)
+```{r dot_plots}
+#plot(dot_plot_e)
 ```
-
+```{r dot_plot_c}
+#plot(dot_plot_c)
+```
 
 ## Future Work
 count individual organisms in the parks (long term data collection)
+track change over time
 
-##Figure Ideas
-correllation matrix
-scatterplots
-correlation between prey/predators
-most common species in a few parks
-glm for predicting something based on number of species
-conservation
