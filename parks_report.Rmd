@@ -50,14 +50,15 @@ To answer this question, I used variable selection techniques to __.
 
 
 ## Conservation Status of Species
-dot plot
-make df of park regions 
-```{r dot_plots}
-#plot(dot_plot_e)
+
+```{r dot_plots, echo = FALSE, warning = FALSE, message = FALSE, fig.height=10}
+readRDS("figures/dot_plot_e.rds")
 ```
-```{r dot_plot_c}
-#plot(dot_plot_c)
+
+```{r dot_plots_2, echo = FALSE, warning = FALSE, message = FALSE, fig.height=10}
+readRDS("figures/dot_plot_c.rds")
 ```
+
 
 ## Future Work
 count individual organisms in the parks (long term data collection)
