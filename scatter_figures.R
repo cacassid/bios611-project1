@@ -17,16 +17,12 @@ scatter2 <- ggplot(counts_area_sl, aes(x=Mammal, y=Fish, size = Acres)) + geom_p
   theme(legend.position = "none")
 scatter2
 
-scatter3 <- ggplot(counts_area_sl, aes(x=Insect, y=Bird, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
-  xlab("Number of Insect Species") + ylab("Number of Bird Species") + 
-  ggtitle("Number of Insect Species vs Bird Species") +
-  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
-scatter3
+ggsave("figures/scatter1.png",scatter1)
+saveRDS(scatter1, "figures/scatter1.rds")
 
-scatter4 <- ggplot(counts_area_sl, aes(x=Amphibian, y=Fish, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
-  xlab("Number of Insect Species") + ylab("Number of Bird Species") + 
-  ggtitle("Number of Insect Species vs Bird Species") +
-  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
-scatter4
+ggsave("figures/scatter2.png",scatter2)
+saveRDS(scatter2, "figures/scatter2.rds")
+
+
 
 
