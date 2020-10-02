@@ -54,7 +54,7 @@ counts_area_sl$Size <- ifelse(counts_area$Acres < 69010.5, "Small",
                               ifelse(counts_area$Acres < 238764.5, "Medium", 
                                      ifelse(counts_area$Acres < 817360.2, "Large", "Extra Large")))
 
-counts_area_sl$LatCat2 <- ifelse(counts_area_sl$Latitude < 25, "<25", 
+counts_area_sl$LatCat2 <- ifelse(counts_area_sl$Latitude < 25, "20-25", 
                           ifelse(counts_area_sl$Latitude < 30, "25-30", 
                           ifelse(counts_area_sl$Latitude < 35, "30-35", 
                           ifelse(counts_area_sl$Latitude < 40, "35-40", 
@@ -62,8 +62,57 @@ counts_area_sl$LatCat2 <- ifelse(counts_area_sl$Latitude < 25, "<25",
                           ifelse(counts_area_sl$Latitude < 50, "45-50", 
                           ifelse(counts_area_sl$Latitude < 55, "50-55",
                           ifelse(counts_area_sl$Latitude < 60, "55-60",
-                          ifelse(counts_area_sl$Latitude < 65, "60-65",">65"))))))))) 
+                          ifelse(counts_area_sl$Latitude < 65, "60-65","65-70"))))))))) 
+
+
+#create data set to count species of different levels of conservation status by park
+conservation <- species %>% group_by(Park.Name, Conservation.Status) %>% tally()
+conservation$Conservation.Status[which(conservation$Conservation.Status == "")] = "No Concern"
+conservation %>% rename(Status = Conservation.Status)
+#convert from long to wide
+conservation_wide <- conservation %>% spread(data=conservation, key=Conservation.Status, value=n)
+#set empty to NA
+conservation_wide$Breeder <- as.numeric(as.character(conservation_wide$Breeder))
+conservation_wide$Endangered <- as.numeric(as.character(conservation_wide$Endangered))
+conservation_wide$Extinct<- as.numeric(as.character(conservation_wide$Extinct))
+conservation_wide$`In Recovery` <- as.numeric(as.character(conservation_wide$`In Recovery`))
+conservation_wide$Migratory<- as.numeric(as.character(conservation_wide$Migratory))
+conservation_wide$`No Concern`<- as.numeric(as.character(conservation_wide$`No Concern`))
+conservation_wide$`Proposed Endangered`<- as.numeric(as.character(conservation_wide$`Proposed Endangered`))
+conservation_wide$`Proposed Threatened`<- as.numeric(as.character(conservation_wide$`Proposed Threatened`))
+conservation_wide$Resident<- as.numeric(as.character(conservation_wide$Resident))
+conservation_wide$`Species of Concern`<- as.numeric(as.character(conservation_wide$`Species of Concern`))
+conservation_wide$`Under Review`<- as.numeric(as.character(conservation_wide$`Under Review`))
+conservation_wide$Threatened<- as.numeric(as.character(conservation_wide$Threatened))
+
+#replace NA with 0
+conservation_wide[is.na(conservation_wide)] <- 0
+
+#join conservation data with parks data 
+conservation_park_info <- left_join(conservation_wide, parks)
+
+#data set for conservation category counts by species category
+conservation_species <- species %>% group_by(Category, Conservation.Status) %>% tally()
+conservation_species$Conservation.Status[which(conservation_species$Conservation.Status == "")] = "No Concern"
+#make long to wide
+conservation_species_wide <- conservation_species %>% spread(data=conservation_species, key=Conservation.Status, value=n)
+#set empty to NA
+conservation_species_wide$Breeder <- as.numeric(as.character(conservation_species_wide$Breeder))
+conservation_species_wide$Endangered <- as.numeric(as.character(conservation_species_wide$Endangered))
+conservation_species_wide$Extinct<- as.numeric(as.character(conservation_species_wide$Extinct))
+conservation_species_wide$`In Recovery` <- as.numeric(as.character(conservation_species_wide$`In Recovery`))
+conservation_species_wide$Migratory<- as.numeric(as.character(conservation_species_wide$Migratory))
+conservation_species_wide$`No Concern`<- as.numeric(as.character(conservation_species_wide$`No Concern`))
+conservation_species_wide$`Proposed Endangered`<- as.numeric(as.character(conservation_species_wide$`Proposed Endangered`))
+conservation_species_wide$`Proposed Threatened`<- as.numeric(as.character(conservation_species_wide$`Proposed Threatened`))
+conservation_species_wide$Resident<- as.numeric(as.character(conservation_species_wide$Resident))
+conservation_species_wide$`Species of Concern`<- as.numeric(as.character(conservation_species_wide$`Species of Concern`))
+conservation_species_wide$`Under Review`<- as.numeric(as.character(conservation_species_wide$`Under Review`))
+conservation_species_wide$Threatened<- as.numeric(as.character(conservation_species_wide$Threatened))
+#set NA to 0
+conservation_species_wide[is.na(conservation_species_wide)] <- 0
 
 
 
 write_csv(counts_area_sl, "derived_data/counts_area_sl.csv")
+write_csv(conservation_park_info, "derived_data/conservation_park_info.csv")
