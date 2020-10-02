@@ -2,7 +2,10 @@
 title: "Biodiversity in National Parks"
 author: "Caitlin Cassidy"
 date: "10/1/2020"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -15,5 +18,24 @@ The United States has 62 National Parks. Data on 56 of these parks was provided 
 
 In this project, we will ????
 
-## Density of Species
+## Number of Unique Species by Latitude 
+The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, fish, plants and other types of organisms. Since these parks are located all over the U.S. the parks will vary in terms of what species and how many they are home to. 
 
+If we consider the number of unique species for different ranges of latitude, we can see how many species live in each range of latitude.
+```{r latitude plot}
+#plot(lat_figure)
+```
+By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live.
+The number of unique fish species, however, does not follow this same pattern. While more fish species live in low latitudes than middle or high latitudes, the distribution is more even across all latitudes than the distribution of the other species.
+
+
+
+#Figures to Make
+correllation matrix
+scatterplots
+number of species by lattitude
+
+correlation between prey/predators
+most common species in a few parks
+glm for predicting something based on number of species
+conservation
