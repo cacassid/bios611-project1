@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Introduction to this Project
-The United States has 62 National Parks. Data on 56 of these parks was provided by the National Park Service. Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems.
+The United States has 62 National Parks. Data on 56 of these parks has been provided by the National Park Service. Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems.
 
 In this project, we will ????
 
@@ -28,13 +28,32 @@ If we consider the number of unique species for different ranges of latitude, we
 By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live.
 The number of unique fish species, however, does not follow this same pattern. While more fish species live in low latitudes than middle or high latitudes, the distribution is more even across all latitudes than the distribution of the other species.
 
+In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
 
-#Figures to Make
+##Relationships Between Species
+In many ecosystems, the number of birds and mammals are positively correlated (cite).
+
+```{r mammals scatterplots}
+#plot(scatter1)
+#plot(scatter5)
+```
+These scatterplots demonstrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
+
+The first scatterplot shows a positive association between the number of mammal species and the number of bird species in the parks. 
+
+The second scatterplot shows a negative association between the number of mammal species and the number of fish species in the parks.
+
+##Can we predict the number of mammal species in a park?
+Is it possible to predict the number of mammal species in a park with reasonable accuracy?
+To answer this question, linear models can be used. 
+
+
+
+
+##Figure Ideas
 correllation matrix
 scatterplots
-number of species by lattitude
-
 correlation between prey/predators
 most common species in a few parks
 glm for predicting something based on number of species
