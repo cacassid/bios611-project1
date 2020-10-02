@@ -57,6 +57,16 @@ counts_area_sl$Size <- ifelse(counts_area$Acres < 69010.5, "Small",
                               ifelse(counts_area$Acres < 238764.5, "Medium", 
                                      ifelse(counts_area$Acres < 817360.2, "Large", "Extra Large")))
 
+#create latitude categories
+counts_area_sl$LatCat <- ifelse(counts_area_sl$Latitude < 30, "<30", 
+                         ifelse(counts_area_sl$Latitude < 40, "30-40", 
+                         ifelse(counts_area_sl$Latitude < 50, "40-50", 
+                         ifelse(counts_area_sl$Latitude < 60, "50-60", "60-70"))))
+
+counts_area_sl$LatCat2 <- ifelse(counts_area_sl$Latitude < 25, "<25", 
+                                ifelse(counts_area_sl$Latitude < 30, "25-30", 
+                                       ifelse(counts_area_sl$Latitude < 50, "40-50", 
+                                              ifelse(counts_area_sl$Latitude < 60, "50-60", "60-70"))))
 
 
 #create data set to count species of different levels of conservation status by park
