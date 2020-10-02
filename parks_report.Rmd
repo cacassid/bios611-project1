@@ -31,7 +31,7 @@ The number of unique fish species, however, does not follow this same pattern. W
 In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
 
-##Relationships Between Species
+## Relationships Between Species
 In many ecosystems, the number of birds and mammals are positively correlated (cite).
 
 ```{r mammals scatterplots}
@@ -44,12 +44,21 @@ The first scatterplot shows a positive association between the number of mammal 
 
 The second scatterplot shows a negative association between the number of mammal species and the number of fish species in the parks.
 
-##Can we predict the number of mammal species in a park?
+## Can we predict the number of mammal species in a park?
 Is it possible to predict the number of mammal species in a park with reasonable accuracy?
-To answer this question, linear models can be used. 
+To answer this question, I used variable selection techniques to __. 
+
+## Conservation Status of Species
+dot plot
+make df of park regions 
+```{r mammals scatterplots}
+plot(dot_plot_e)
+plot(dot_plot_c)
+```
 
 
-
+## Future Work
+count individual organisms in the parks (long term data collection)
 
 ##Figure Ideas
 correllation matrix
