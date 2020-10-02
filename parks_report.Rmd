@@ -34,9 +34,9 @@ In general, from these figures we can see that parks at middle latitudes have a 
 ## Relationships Between Species
 In many ecosystems, the number of birds and mammals are positively correlated (cite).
 
-```{r mammals_scatterplots}
-#plot(scatter1)
-#plot(scatter5)
+```{r mammals_scatterplots, echo = FALSE}
+readRDS("figures/scatter1.rds")
+readRDS("figures/scatter2.rds")
 ```
 These scatterplots demonstrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
 
