@@ -118,7 +118,7 @@ dot_plot_e <- ggplot(conservation_park_info2, aes(x=Park.Name, y=Endangered)) +
   coord_flip()
 dot_plot_e
 
-conservation_park_info3 <- conservation_park_info3[order(conservation_park_info$Endangered), ]
+conservation_park_info3 <- conservation_park_info3[order(conservation_park_info$`Species of Concern`), ]
 conservation_park_info3$Park.Name <- factor(conservation_park_info3$Park.Name, levels = conservation_park_info3$Park.Name)
 
 dot_plot_c <- ggplot(conservation_park_info3, aes(x=Park.Name, y=`Species of Concern`)) + 
@@ -134,8 +134,17 @@ dot_plot_c <- ggplot(conservation_park_info3, aes(x=Park.Name, y=`Species of Con
   coord_flip()
 dot_plot_c
 
-## Slope chart of top 10 parks endangered and top 10 parks species of concern
+##Slope chart of top 15 parks with most endangered vs top 15 parks with most of concern
+#top 15 endangered
+top_15_e <- conservation_park_info2[42:56,]
+top_15_e <- top_15_e %>% select(Park.Name, Endangered)
 
+#top 15 concern
+top_15_c <- conservation_park_info3[42:56,]
+top_15_c <- top_15_c %>% select(Park.Name, `Species of Concern`)
+
+#join
+top15 <- full_join(top_15_e,top_15_c,by="Park.Name")
 
 
 #glm
