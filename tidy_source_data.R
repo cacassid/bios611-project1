@@ -83,12 +83,33 @@ conservation_wide$Threatened<- as.numeric(as.character(conservation_wide$Threate
 conservation_wide[is.na(conservation_wide)] <- 0
 
 #join conservation data with parks data 
-conservation_park_info <- left_join(conservation_wide, parks, by = Park.Name)
+conservation_park_info <- left_join(conservation_wide, parks)
 
+#data set for conservation category counts by species category
+conservation_species <- species %>% group_by(Category, Conservation.Status) %>% tally()
+conservation_species$Conservation.Status[which(conservation_species$Conservation.Status == "")] = "No Concern"
+#make long to wide
+conservation_species_wide <- conservation_species %>% spread(data=conservation_species, key=Conservation.Status, value=n)
+#set empty to NA
+conservation_species_wide$Breeder <- as.numeric(as.character(conservation_species_wide$Breeder))
+conservation_species_wide$Endangered <- as.numeric(as.character(conservation_species_wide$Endangered))
+conservation_species_wide$Extinct<- as.numeric(as.character(conservation_species_wide$Extinct))
+conservation_species_wide$`In Recovery` <- as.numeric(as.character(conservation_species_wide$`In Recovery`))
+conservation_species_wide$Migratory<- as.numeric(as.character(conservation_species_wide$Migratory))
+conservation_species_wide$`No Concern`<- as.numeric(as.character(conservation_species_wide$`No Concern`))
+conservation_species_wide$`Proposed Endangered`<- as.numeric(as.character(conservation_species_wide$`Proposed Endangered`))
+conservation_species_wide$`Proposed Threatened`<- as.numeric(as.character(conservation_species_wide$`Proposed Threatened`))
+conservation_species_wide$Resident<- as.numeric(as.character(conservation_species_wide$Resident))
+conservation_species_wide$`Species of Concern`<- as.numeric(as.character(conservation_species_wide$`Species of Concern`))
+conservation_species_wide$`Under Review`<- as.numeric(as.character(conservation_species_wide$`Under Review`))
+conservation_species_wide$Threatened<- as.numeric(as.character(conservation_species_wide$Threatened))
+#set NA to 0
+conservation_species_wide[is.na(conservation_species_wide)] <- 0
 
 
 #write new dataframes to derived data
 write.csv(species, "~/bios611-project1/derived_data/species.csv")
 write.csv(parks, "~/bios611-project1/derived_data/datasets_670_1306_parks.csv")
 write.csv(counts_area, "~/bios611-project1/derived_data/counts_area.csv")
-write.csv(conservation, "~/bios611-project1/derived_data/conservation.csv")
+write.csv(conservation_park_info, "~/bios611-project1/derived_data/conservation_park_info.csv")
+write.csv(conservation_species_wide, "~/bios611-project1/derived_data/conservation_species_wide.csv")
