@@ -1,11 +1,12 @@
 library(tidyverse)
 library(dplyr)
-library(ggplot2)
 
-species <- read.csv("./source_data/species.csv")
-parks <- read.csv("./source_data/datasets_670_1306_parks.csv")
+#This script cleans the parks and species data sets and generates new
+#data sets via wrangling and joins
+species <- read.csv("~/bios611-project1/source_data/species.csv")
+parks <- read.csv("~/bios611-project1/source_data/datasets_670_1306_parks.csv")
 
-## clean datasets 
+## clean data sets 
 parks$Acres <- as.numeric(parks$Acres)
 parks$Latitude <- as.numeric(parks$Latitude)
 parks$Longitude <- as.numeric(parks$Longitude)
@@ -49,46 +50,45 @@ counts_area <- left_join(species_counts_all, parks)
 #make small, medium, large park size variable
 #get tertiles
 quantile(counts_area$Acres, c(.25, .50, .75)) 
-counts_area <- counts_area %>% mutate(counts_area$Size = ifelse(counts_area$Acres > 323431, "Small", "Large"))
+counts_area <- counts_area %>% mutate(counts_area$Size = 
+                                        ifelse(counts_area$Acres > 323431, "Small", "Large"))
 counts_area_sl <- counts_area %>% mutate(Size = Acres)
-counts_area_sl$Size <- ifelse(counts_area$Acres < 69010.5, "Small", ifelse(counts_area$Acres < 238764.5, 
-                                                                           "Medium", ifelse(counts_area$Acres < 817360.2, "Large", "Extra Large")))
+counts_area_sl$Size <- ifelse(counts_area$Acres < 69010.5, "Small", 
+                              ifelse(counts_area$Acres < 238764.5, "Medium", 
+                                     ifelse(counts_area$Acres < 817360.2, "Large", "Extra Large")))
 
 
 
+#create data set to count species of different levels of conservation status by park
+conservation <- species %>% group_by(Park.Name, Conservation.Status) %>% tally()
+conservation$Conservation.Status[which(conservation$Conservation.Status == "")] = "No Concern"
+conservation %>% rename(Status = Conservation.Status)
+#convert from long to wide
+conservation_wide <- conservation %>% spread(data=conservation, key=Conservation.Status, value=n)
+#set empty to NA
+conservation_wide$Breeder <- as.numeric(as.character(conservation_wide$Breeder))
+conservation_wide$Endangered <- as.numeric(as.character(conservation_wide$Endangered))
+conservation_wide$Extinct<- as.numeric(as.character(conservation_wide$Extinct))
+conservation_wide$`In Recovery` <- as.numeric(as.character(conservation_wide$`In Recovery`))
+conservation_wide$Migratory<- as.numeric(as.character(conservation_wide$Migratory))
+conservation_wide$`No Concern`<- as.numeric(as.character(conservation_wide$`No Concern`))
+conservation_wide$`Proposed Endangered`<- as.numeric(as.character(conservation_wide$`Proposed Endangered`))
+conservation_wide$`Proposed Threatened`<- as.numeric(as.character(conservation_wide$`Proposed Threatened`))
+conservation_wide$Resident<- as.numeric(as.character(conservation_wide$Resident))
+conservation_wide$`Species of Concern`<- as.numeric(as.character(conservation_wide$`Species of Concern`))
+conservation_wide$`Under Review`<- as.numeric(as.character(conservation_wide$`Under Review`))
+conservation_wide$Threatened<- as.numeric(as.character(conservation_wide$Threatened))
 
-#scatterplots
-proposal1 <- ggplot(counts_area_sl, aes(x=Mammal, y=Bird)) + geom_point(alpha = 1, color = "#0A684A") + 
-  xlab("Number of Mammal Species") + ylab("Number of Bird Species") + 
-  ggtitle("Number of Mammal Species vs Bird Species") +
-  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
-proposal1
+#replace NA with 0
+conservation_wide[is.na(conservation_wide)] <- 0
 
-ggplot(species_counts_all, aes(x=Reptile, y=Fish)) + geom_point()
-ggplot(species_counts_all, aes(x=Algae, y=Bird)) + geom_point()
-ggplot(species_counts_all, aes(x=Fish, y=Bird)) + geom_point()
-ggplot(species_counts_all, aes(x=`Vascular Plant`, y=`Nonvascular Plant`)) + geom_point()
-
-ggplot(counts_area, aes(x=Mammal, y=Latitude)) + geom_point()
-
-
-
-#boxplot
-#vascular plant by size categories
-proposal3 <- ggplot(counts_area_sl, aes(x=Size, y=`Vascular Plant`, fill = Size)) + 
-  geom_boxplot(alpha = 0.8, show.legend = FALSE) +
-  xlab("Size Category") + ylab("Number of Vascular Plant Species") +
-  ggtitle("Number of Vascular Plant Species by Park Size") +
-  scale_color_manual(values=c('#0A684A','#11C28A', '#11C244', '#59ED09')) +
-  scale_fill_manual(values=c('#0A684A','#11C28A', '#11C244', '#59ED09'))
-proposal3
-
-#color pallette
-c('#8C7B42', '#788C42', '#538C42', '#428C56', '#428C7B', '#42788C')
+#join conservation data with parks data 
+conservation_park_info <- left_join(conservation_wide, parks, by = Park.Name)
 
 
 
-write.csv(species, "derived_data/species.csv")
-write.csv(parks, "derived_data/datasets_670_1306_parks.csv")
-
-###added 9/1/20
+#write new dataframes to derived data
+write.csv(species, "~/bios611-project1/derived_data/species.csv")
+write.csv(parks, "~/bios611-project1/derived_data/datasets_670_1306_parks.csv")
+write.csv(counts_area, "~/bios611-project1/derived_data/counts_area.csv")
+write.csv(conservation, "~/bios611-project1/derived_data/conservation.csv")
