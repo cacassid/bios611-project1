@@ -5,11 +5,14 @@ library(corrplot)
 library(jtools)
 library(ggstance)
 library(broom.mixed)
+library(scales)
+library(olsrr)
 #install.packages("jtools")
 #install.packages("ggstance")
 #install.packages("broom.mixed")
 #install.packages("corrplot")
 #install.packages("ggpubr")
+#install.packages("olsrr")
 
 #correlation matrix
 
@@ -19,8 +22,16 @@ library(broom.mixed)
 scatter1 <- ggplot(counts_area_sl, aes(x=Mammal, y=Bird, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
   xlab("Number of Mammal Species") + ylab("Number of Bird Species") + 
   ggtitle("Number of Mammal Species vs Bird Species") +
-  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1)
+  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1) +
+  theme(legend.position = "none")
 scatter1
+
+scatter5 <- ggplot(counts_area_sl, aes(x=Mammal, y=Fish, size = Acres)) + geom_point(alpha = 1, color = "#1375A0") + 
+  xlab("Number of Mammal Species") + ylab("Number of Fish Species") + 
+  ggtitle("Number of Mammal Species vs Fish Species") +
+  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1) +
+  theme(legend.position = "none")
+scatter5
 
 scatter2 <- ggplot(counts_area_sl, aes(x=Insect, y=Bird, size = Acres)) + geom_point(alpha = 1, color = "#0A684A") + 
   xlab("Number of Insect Species") + ylab("Number of Bird Species") + 
@@ -90,6 +101,41 @@ conserv1
 ggplot(conservation, aes(Park.Name, fill = Conservation.Status)) +
   geom_bar()
 
+#dot plot
+conservation_park_info2 <- conservation_park_info2[order(conservation_park_info$Endangered), ]
+conservation_park_info2$Park.Name <- factor(conservation_park_info2$Park.Name, levels = conservation_park_info2$Park.Name) 
+
+dot_plot_e <- ggplot(conservation_park_info2, aes(x=Park.Name, y=Endangered)) + 
+  geom_point(col="red", size=3) + 
+  geom_segment(aes(x=Park.Name, 
+                   xend=Park.Name, 
+                   y=min(Endangered), 
+                   yend=max(Endangered)), 
+               linetype="dashed", 
+               size=0.1) +   
+  xlab("Park") + ylab("Number of Species") +
+  labs(title="Number of Endangered Species in US National Parks") +  
+  coord_flip()
+dot_plot_e
+
+conservation_park_info3 <- conservation_park_info3[order(conservation_park_info$Endangered), ]
+conservation_park_info3$Park.Name <- factor(conservation_park_info3$Park.Name, levels = conservation_park_info3$Park.Name)
+
+dot_plot_c <- ggplot(conservation_park_info3, aes(x=Park.Name, y=`Species of Concern`)) + 
+  geom_point(col="orange", size=3) + 
+  geom_segment(aes(x=Park.Name, 
+                   xend=Park.Name, 
+                   y=min(`Species of Concern`), 
+                   yend=max(`Species of Concern`)), 
+               linetype="dashed", 
+               size=0.1) +   
+  xlab("Park") + ylab("Number of Species") +
+  labs(title="Number of Species of Concern in US National Parks") +  
+  coord_flip()
+dot_plot_c
+
+## Slope chart of top 10 parks endangered and top 10 parks species of concern
+
 
 
 #glm
@@ -104,8 +150,27 @@ summary(fit4)
 
 plot_summs(fit, fit2, fit3, scale = TRUE)
 
-#export_summs(fit, fit2, scale = TRUE)
+#all subsets regression
+model <- lm(Mammal ~ Amphibian + Bird + Fish + Insect + Reptile + `Vascular Plant` + Acres + Latitude, 
+            data = counts_area_sl)
+
+all_possible <- ols_step_all_possible(model)
+all_possible
+plot(all_possible)
+
+best_subset <- ols_step_best_subset(model)
+best_subset
+
+forward <- ols_step_forward_p(model)
+forward
+
+backward <- ols_step_backward_p(model)
+backward
+
+stepwise <- ols_step_both_p(model)
+stepwise
 
 
-#density of species
+effect_plot(model, pred = Bird, interval = TRUE, plot.points = TRUE)
+effect_plot(model, pred = Fish, interval = TRUE, plot.points = TRUE)
 
