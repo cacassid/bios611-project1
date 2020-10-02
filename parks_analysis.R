@@ -1,5 +1,11 @@
 #Analysis of parks data set
 library(ggplot2)
+library(jtools)
+library(ggstance)
+library(broom.mixed)
+#install.packages("jtools")
+#install.packages("ggstance")
+#install.packages("broom.mixed")
 
 #scatterplots
 proposal1 <- ggplot(counts_area_sl, aes(x=Mammal, y=Bird)) + geom_point(alpha = 1, color = "#0A684A") + 
@@ -41,6 +47,24 @@ proposal3
 c('#8C7B42', '#788C42', '#538C42', '#428C56', '#428C7B', '#42788C')
 
 
+#conservation analysis
+conserv1 <- ggplot(conservation_park_info, aes(x=`No Concern`)) + geom_histogram()
+conserv1
+
+ggplot(conservation, aes(Park.Name, fill = Conservation.Status)) +
+  geom_bar()
 
 
+
+#glm
+fit <- glm(Mammal~Bird+Acres+Insect,data=counts_area_sl)
+summary(fit)
+fit2 <- glm(Mammal~Bird+Acres,data=counts_area_sl)
+summary(fit2)
+fit3 <- glm(Mammal~Bird+Insect,data=counts_area_sl)
+summary(fit3)
+
+plot_summs(fit, fit2, fit3, scale = TRUE)
+
+#export_summs(fit, fit2, scale = TRUE)
 
