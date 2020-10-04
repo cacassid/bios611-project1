@@ -18,8 +18,8 @@ The United States has 62 National Parks. Data on 56 of these parks has been prov
 
 In this project, we will ????
 
-## Number of Unique Species by Latitude 
-The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, fish, plants and other types of organisms. Since these parks are located all over the U.S. the parks will vary in terms of what species and how many they are home to. 
+## Variability of Number of Species Latitude 
+The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, fish, plants and other types of organisms. Since these parks are located all over the U.S. the parks will vary in terms of what species and how many species reside within them. 
 
 If we consider the number of unique species for different ranges of latitude, we can see how many species live in each range of latitude.
 ```{r latitude_plot, fig.width=10, fig.height=10}
@@ -30,9 +30,8 @@ The number of unique fish species, however, does not follow this same pattern. W
 
 In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
-
 ## Relationships Between Species
-In many ecosystems, the number of birds and mammals are positively correlated (cite).
+In many ecosystems, it has been observed that the number of bird species and mammal species are positively correlated (cite). I decided to see if a similar pattern emerged in the National Parks data.
 
 ```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE}
 readRDS("figures/scatter1.rds")
@@ -43,6 +42,8 @@ These scatterplots demonstrate correlations between mammals and other species in
 The first scatterplot shows a positive association between the number of mammal species and the number of bird species in the parks. 
 
 The second scatterplot shows a negative association between the number of mammal species and the number of fish species in the parks.
+
+From these plots, we can see that there are some associations between the number of mammal species and the number of other types of species. This information is useful for a variety of reasons. For example, it may be possible to estimate the number of mammal species in a park for which the number of bird and fish species are known.
 
 ## Can we predict the number of mammal species in a park?
 Is it possible to predict the number of mammal species in a park with reasonable accuracy?
@@ -61,6 +62,6 @@ readRDS("figures/dot_plot_c.rds")
 
 
 ## Future Work
-count individual organisms in the parks (long term data collection)
-track change over time
+The Biodiveristy in National Parks data set contains many pieces of useful information. I think that it will be beneficial to continue and expand data collection efforts within the National Park system. The data sets that were used for this project contained information on the number of unique species in the parks, but did not contain information about the number of unique organisms in the parks. I think that efforts should be undertaken to sample each of the National Parks to collect data on the individual organisms. This type of data collection would be a massive undertaking and would likely need to be a long term effort. I think it would also be very useful to track changes in populations over time. This would allow park rangers and the public to be aware of changing animal and plant populations. As more and more species are becoming endangered each year, tracking the number of individual organisms over time could allow us to determine if conservation efforts are successful or to predict how many years are left until another species is extinct.
+
 
