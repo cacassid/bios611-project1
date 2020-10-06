@@ -19,20 +19,11 @@ figures/lat_figure.png figures/lat_figure.rds:\
  lat_figure.R
 	Rscript lat_figure.R
 	
-figures/scatter1.png figures/scatter1.rds:\
+figures/scatter_arrange.png figures/scatter_arrange.rds:\
  derived_data/counts_area_sl.csv\
  scatter_figures.R
 	Rscript scatter_figures.R
 	
-figures/scatter2.png figures/scatter2.rds:\
- derived_data/counts_area_sl.csv\
- scatter_figures.R
-	Rscript scatter_figures.R
-	
-figures/scatter3.png figures/scatter3.rds:\
- derived_data/counts_area_sl.csv\
- scatter_figures.R
-	Rscript scatter_figures.R
 	
 figures/dot_plot_e.png figures/dot_plot_e.rds:\
  derived_data/conservation_park_info.csv\
