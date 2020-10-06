@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Introduction to this Project
-The United States has 62 National Parks. Data on 56 of these parks has been provided by the National Park Service. Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems.
+The United States has 62 National Parks. Data on 56 of these parks has been provided by the National Park Service. This data details biodiversity within the parks. The data contain a catalog of species that live within the parks, information on the conservation status of many of these species, as well as general info regarding the parks' locations and size.
+
+Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems. It is important that we keep records of park biodiversity in order to understand the ecology and health of these ecosystems.
 
 In this project, we will examine this data set in an effort to uncover patterns and relationships in the data. We will also generate a few linear models and suggest efforts for future data collection in the National Park system.
 
