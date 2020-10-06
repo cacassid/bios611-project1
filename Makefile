@@ -48,4 +48,9 @@ figures/glm_figure.png figures/glm_figure.rds:\
  derived_data/best_subset.csv\
  glm_figures.R
 	Rscript glm_figures.R
+	
+figures/glm_figure2.png figures/glm_figure2.rds:\
+ derived_data/counts_area_sl.csv\
+ glm_figures.R
+	Rscript glm_figures.R
 
