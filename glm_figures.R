@@ -1,4 +1,10 @@
+library(tidyverse)
+library(jtools)
+library(olsrr)
+#install.packages("olsrr")
 
+
+counts_area_sl <- read_csv("./derived_data/counts_area_sl.csv")
 
 #glm
 fit <- glm(Mammal~Bird+Acres+Insect,data=counts_area_sl)
@@ -13,15 +19,15 @@ summary(fit4)
 plot_summs(fit, fit2, fit3, scale = TRUE)
 
 #all subsets regression
-model <- lm(Mammal ~ Amphibian + Bird + Fish + Insect + Reptile + `Vascular Plant` + Acres + Latitude, 
+model <- lm(Mammal ~ Algae + Amphibian + Bird + `Crab/Lobster/Shrimp` + Fish + 
+              Fungi + Insect + Invertebrate + `Nonvascular Plant` + Reptile + 
+              `Slug/Snail` + `Spider/Scorpion` + `Vascular Plant` + Acres + 
+              Longitude + Latitude, 
             data = counts_area_sl)
-
-all_possible <- ols_step_all_possible(model)
-all_possible
-plot(all_possible)
 
 best_subset <- ols_step_best_subset(model)
 best_subset
+plot(best_subset)
 
 forward <- ols_step_forward_p(model)
 forward
