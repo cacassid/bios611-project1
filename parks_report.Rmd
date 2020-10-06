@@ -14,26 +14,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Introduction to this Project
-The United States has 62 National Parks. Data on 56 of these parks has been provided by the National Park Service. This data details biodiversity within the parks. The data contain a catalog of species that live within the parks, information on the conservation status of many of these species, as well as general info regarding the parks' locations and size.
+The United States has 62 National Parks. Data on 56 of these parks have been provided by the National Park Service. This data details biodiversity within the parks. The data contain a catalog of species that live within the parks, information on the conservation status of many of these species, as well as general info regarding the parks' locations and size.
 
 Because of the varying geography of the U.S., the parks vary greatly in terms of their biodiversity. Biodiversity refers to the variety and variability of species in an ecosystem. Biodiversity is important for maintaining healthy ecosystems. It is important that we keep records of park biodiversity in order to understand the ecology and health of these ecosystems.
 
 In this project, we will examine this data set in an effort to uncover patterns and relationships in the data. We will also generate a few linear models and suggest efforts for future data collection in the National Park system.
 
 ## Variability of Number of Species Latitude 
-The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, fish, plants and other types of organisms. Since these parks are located all over the U.S. the parks will vary in terms of what species and how many species reside within them. 
+The U.S. National Parks are home to a variety of different species of mammals, birds, reptiles, and fish, among many other types of organisms. Since these parks are located all over the U.S., they will vary in terms their wildlife. 
 
-If we consider the number of unique species for different ranges of latitude, we can see how many species live in each range of latitude.
+One interesting pattern that emerges in the data is the number of unique species at different latitudes. The following bar chart depict the number of unique species of mammals (A), birds (B), reptiles (C), and fish (D), at different latitudes. The latitude categories are defined in intervals of 10 degrees latitude. 
+
 ```{r latitude_plot, fig.width=10, fig.height=10}
 readRDS("figures/lat_figure.rds")
 ```
-By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live.
-The number of unique fish species, however, does not follow this same pattern. While more fish species live in low latitudes than middle or high latitudes, the distribution is more even across all latitudes than the distribution of the other species.
+By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live. This pattern makes sense. It is also interesting to note that the distributions for mammals and birds are extremely similar. I will follow up on this relationship later in this discussion.
+
+The number of unique fish species, however, does not follow this same pattern. While more fish species live in low latitudes than middle or high latitudes, the distribution is more even across the categories of latitude than the distribution of the other species.
 
 In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
 ## Relationships Between Species
-In many ecosystems, it has been observed that the number of bird species and mammal species are positively correlated (cite). I decided to see if a similar pattern emerged in the National Parks data.
+In many ecosystems, it has been observed that the number of bird species and mammal species are positively correlated (cite). I decided to see if a similar pattern emerged in the National Parks data. 
 
 ```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE}
 readRDS("figures/scatter1.rds")
