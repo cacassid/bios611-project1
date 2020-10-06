@@ -20,12 +20,20 @@ scatter2 <- ggplot(counts_area_sl, aes(x=Mammal, y=Fish, size = Acres)) + geom_p
 scatter2
 
 #Mammals vs Vascular Plants
-scatter3 <- ggplot(counts_area_sl, aes(x=Mammal, y=`Vascular Plant`, size = Acres)) + geom_point(alpha = 1, color = "#B09908") + 
+scatter3 <- ggplot(counts_area_sl, aes(x=Mammal, y=`Vascular Plant`, size = Acres)) + geom_point(alpha = 1, color = "#C25B05") + 
   xlab("Number of Mammal Species") + ylab("Number of Vascular Plant Species") + 
   ggtitle("Number of Mammal Species vs Vascular Plant Species") +
   geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1) +
   theme(legend.position = "none")
 scatter3
+
+scatter4 <- ggplot(counts_area_sl, aes(x=Mammal, y= Amphibian, size = Acres)) + geom_point(alpha = 1, color = "#C25B05") + 
+  xlab("Number of Mammal Species") + ylab("Number of Vascular Plant Species") + 
+  ggtitle("Number of Mammal Species vs Vascular Plant Species") +
+  geom_smooth(method=lm, se=FALSE, color = "black", alpha = 0.1) +
+  theme(legend.position = "none")
+scatter4
+
 
 ggsave("figures/scatter1.png",scatter1)
 saveRDS(scatter1, "figures/scatter1.rds")
