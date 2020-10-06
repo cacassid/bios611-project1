@@ -35,24 +35,48 @@ The number of unique fish species, however, does not follow this same pattern. W
 In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
 ## Relationships Between Species
-In many ecosystems, it has been observed that the number of bird species and mammal species are positively correlated (cite). I decided to see if a similar pattern emerged in the National Parks data. 
+From the previous discussion, we noticed that the distributions of the number of unique species of birds and mammals by latitude were very similar. I decided to see there a pattern between the number of species of mammals and birds exists in the parks. I also wanted to see if patterns existed between the number of species of mammals and the number of species of other organisms.
 
 ```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE}
 readRDS("figures/scatter1.rds")
 readRDS("figures/scatter2.rds")
+readRDS("figures/scatter3.rds")
 ```
-These scatterplots demonstrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
+These scatterplots illustrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
 
-The first scatterplot shows a positive association between the number of mammal species and the number of bird species in the parks. 
+The first scatterplot shows a positive association between the number of mammal species and the number of bird species in the parks. The second scatterplot shows a negative association between the number of mammal species and the number of fish species in the parks. The third scatterplot shows a positive association between the number of mammal species and the number of bird species in the parks. 
 
-The second scatterplot shows a negative association between the number of mammal species and the number of fish species in the parks.
+I chose to include these plots in this report because these relationships results in the most interesting patterns in the scatterplots. Other correlations do exist. For instance, there was evidence of a weak positive correlation between the number of mammal species and the number of nonvascular plant species. There was also evidence of a correlation between the number of mammal species and the number of amphibian species. For some comparisons, no correlation appear to exist. For instance, there was no pattern in the relationship between mammal species and fungi species.
 
-From these plots, we can see that there are some associations between the number of mammal species and the number of other types of species. This information is useful for a variety of reasons. For example, it may be possible to estimate the number of mammal species in a park for which the number of bird and fish species are known.
+From these plots, we can see that there are some associations between the number of mammal species and the number of other types of species. This information is useful for a variety of reasons. For example, it may be possible to estimate the number of mammal species in a park for which the number of another type of species is known.
 
 ## Can we predict the number of mammal species in a park?
 Is it possible to predict the number of mammal species in a park with reasonable accuracy?
-To answer this question, I used variable selection techniques to __. 
 
+After observing the simple linear relationship between the number of mammal species and the number of other species, we can build multiple linear regression models to explore this prediction.
+
+To answer this question, I used the best subsets regression to compare all possible models to predict the number of mammal species. I created plots from the resulting models to select a final model.
+
+```{r glm_figures, echo = FALSE, warning = FALSE, message = FALSE}
+readRDS("figures/glm_figure.rds")
+
+```
+From these plots, we can see that the increase in R-square is very minimal for each model term added after the 4th variable. We would like to minimze Mallow's Cp and AIC. The model with four variables minimizes both of these measures.
+
+Therefore, I will choose the model with four variables as the best model to predict the number of mammal species in the parks.
+
+The four variables in this model are: Amphibian, Bird, Fish and Longitude.
+```{r glm_figures2, echo = FALSE, warning = FALSE, message = FALSE}
+readRDS("figures/glm_figure2.rds")
+```
+
+
+```{r glm_table, echo = FALSE, warning = FALSE, message = FALSE}
+library(knitr)
+kable(model_df, caption = "Model selected", format = "simple")
+```
+
+Some comments: we don't have a very large sample size
 
 ## Conservation Status of Species
 
