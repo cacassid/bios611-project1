@@ -3,22 +3,7 @@ library(jtools)
 library(olsrr)
 library(ggpubr)
 
-
-
-
 counts_area_sl <- read_csv("./derived_data/counts_area_sl.csv")
-
-#glm
-fit <- glm(Mammal~Bird+Acres+Insect,data=counts_area_sl)
-summary(fit)
-fit2 <- glm(Mammal~Bird+Acres,data=counts_area_sl)
-summary(fit2)
-fit3 <- glm(Mammal~Bird+Insect,data=counts_area_sl)
-summary(fit3)
-fit4 <- glm(Mammal~Latitude^2+Latitude,data=counts_area_sl)
-summary(fit4)
-
-plot_summs(fit, fit2, fit3, scale = TRUE)
 
 #full model
 model <- lm(Mammal ~ Algae + Amphibian + Bird + `Crab/Lobster/Shrimp` + Fish + 
@@ -31,7 +16,7 @@ model2 <- lm(Mammal ~ Algae + Amphibian + Bird  + Fish +
              `Vascular Plant` + Acres + 
               Longitude + Latitude, 
             data = counts_area_sl)
-#4 Selection Techniques
+#Selection Techniques
 
 #Best subset
 best_subset <- ols_step_best_subset(model2)
