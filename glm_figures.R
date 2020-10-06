@@ -2,7 +2,17 @@ library(tidyverse)
 library(jtools)
 library(olsrr)
 library(ggpubr)
+
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+
+
 #install.packages("olsrr")
+#install.packages("sjPlot")
+#install.packages("sjmisc")
+#install.packages("sjlabelled")
+#install.packages("webshot")
 
 
 counts_area_sl <- read_csv("./derived_data/counts_area_sl.csv")
@@ -76,6 +86,7 @@ glm_figure2 <- ggarrange(amphibian, bird, fish, longitude,
 glm_figure2
 
 #create table of model info
+model_table <- tab_model(model_final, show.r2 = FALSE)
 
 
 
@@ -85,3 +96,8 @@ saveRDS(glm_figure, "figures/glm_figure.rds")
 
 ggsave("figures/glm_figure2.png",glm_figure2)
 saveRDS(glm_figure2, "figures/glm_figure2.rds")
+
+ggsave("figures/glm_table.png",model_table)
+saveRDS(glm_figure2, "figures/glm_figure2.rds")
+
+
