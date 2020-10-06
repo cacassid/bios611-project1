@@ -34,6 +34,10 @@ scatter4 <- ggplot(counts_area_sl, aes(x=Mammal, y= Amphibian, size = Acres)) + 
   theme(legend.position = "none")
 scatter4
 
+scatter_arrange <- ggarrange(scatter1, scatter2, scatter3,
+                         ncol = 1, nrow = 3)
+scatter_arrange
+
 
 ggsave("figures/scatter1.png",scatter1)
 saveRDS(scatter1, "figures/scatter1.rds")
@@ -43,6 +47,9 @@ saveRDS(scatter2, "figures/scatter2.rds")
 
 ggsave("figures/scatter3.png",scatter3)
 saveRDS(scatter3, "figures/scatter3.rds")
+
+ggsave("figures/scatter_arrange.png",scatter_arrange)
+saveRDS(scatter_arrange, "figures/scatter_arrange.rds")
 
 
 
