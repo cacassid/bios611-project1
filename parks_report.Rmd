@@ -38,9 +38,7 @@ In general, from these figures we can see that parks at middle latitudes have a 
 From the previous discussion, we noticed that the distributions of the number of unique species of birds and mammals by latitude were very similar. I decided to see there a pattern between the number of species of mammals and birds exists in the parks. I also wanted to see if patterns existed between the number of species of mammals and the number of species of other organisms.
 
 ```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE}
-readRDS("figures/scatter1.rds")
-readRDS("figures/scatter2.rds")
-readRDS("figures/scatter3.rds")
+readRDS("figures/scatter_arrange.rds")
 ```
 These scatterplots illustrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
 
@@ -79,6 +77,8 @@ kable(model_df, caption = "Model selected", format = "simple")
 Some comments: we don't have a very large sample size
 
 ## Conservation Status of Species
+
+The data also give information about the conservation status of every species that is located in the parks. Some examples of the conservation statuses are: endangered, extinct, threatened, species of concern or no concern. Let's look at the number of endangered species and the number of species of concern at each of the parks.
 
 ```{r dot_plots, echo = FALSE, warning = FALSE, message = FALSE, fig.height=10}
 readRDS("figures/dot_plot_e.rds")
