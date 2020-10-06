@@ -3,16 +3,7 @@ library(jtools)
 library(olsrr)
 library(ggpubr)
 
-library(sjPlot)
-library(sjmisc)
-library(sjlabelled)
 
-
-#install.packages("olsrr")
-#install.packages("sjPlot")
-#install.packages("sjmisc")
-#install.packages("sjlabelled")
-#install.packages("webshot")
 
 
 counts_area_sl <- read_csv("./derived_data/counts_area_sl.csv")
@@ -86,9 +77,10 @@ glm_figure2 <- ggarrange(amphibian, bird, fish, longitude,
 glm_figure2
 
 #create table of model info
-model_table <- tab_model(model_final, show.r2 = FALSE)
-
-
+predictors <- c('Intercept','Bird','Fish', 'Amphibian', 'Longitude')
+estimates <- c(-46.09, 0.22, -0.07, 0.89, -0.44)
+p <- c("0.026", "<0.001", "0.002", "<0.001", "0.002")
+model_df <- data.frame(predictors, estimates, p)
 
 #save figures
 ggsave("figures/glm_figure.png",glm_figure)
