@@ -14,8 +14,6 @@ install.packages("corrplot")
 install.packages("ggpubr")
 install.packages("olsrr")
 
-#correlation matrix
-
 
 
 #scatterplots
