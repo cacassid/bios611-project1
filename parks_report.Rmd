@@ -1,7 +1,6 @@
 ---
 title: "Biodiversity in National Parks"
 author: "Caitlin Cassidy"
-date: "10/1/2020"
 output:
   pdf_document: default
   html_document:
@@ -25,7 +24,7 @@ The U.S. National Parks are home to a variety of different species of mammals, b
 
 One interesting pattern that emerges in the data is the number of unique species at different latitudes. The following bar chart depict the number of unique species of mammals (A), birds (B), reptiles (C), and fish (D), at different latitudes. The latitude categories are defined in intervals of 10 degrees latitude. 
 
-```{r latitude_plot, fig.width=10, fig.height=10}
+```{r latitude_plot, echo = FALSE, warning = FALSE, message = FALSE, fig.width=10, fig.height=10}
 readRDS("figures/lat_figure.rds")
 ```
 By looking at these bar charts, we can see that there are greater numbers of unique mammal, bird and reptile species that live in latitudes in the middle latitudes. Very few mammal, bird and reptile species live in low latitudes or high latitudes. The climate conditions at the low and high latitudes are more extreme than climates in the middle latitudes. Therefore, this data suggests that middle latitudes provide a better climate for mammals, birds and reptiles to live. This pattern makes sense. It is also interesting to note that the distributions for mammals and birds are extremely similar. I will follow up on this relationship later in this discussion.
@@ -34,10 +33,12 @@ The number of unique fish species, however, does not follow this same pattern. W
 
 In general, from these figures we can see that parks at middle latitudes have a great number of unique species and thus greater biodiversity than parks at low and high latitudes.
 
+\newpage
+
 ## Relationships Between Species
 From the previous discussion, we noticed that the distributions of the number of unique species of birds and mammals by latitude were very similar. I decided to see there a pattern between the number of species of mammals and birds exists in the parks. I also wanted to see if patterns existed between the number of species of mammals and the number of species of other organisms.
 
-```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE}
+```{r mammals_scatterplots, echo = FALSE, warning = FALSE, message = FALSE, fig.height=8}
 readRDS("figures/scatter_arrange.rds")
 ```
 These scatterplots illustrate correlations between mammals and other species in the parks.The different size of the points represents the acreage of the park (larger points correspond to larger acreage). 
@@ -55,7 +56,7 @@ After observing the simple linear relationship between the number of mammal spec
 
 To answer this question, I used the best subsets regression to compare all possible models to predict the number of mammal species. I created plots from the resulting models to select a final model.
 
-```{r glm_figures, echo = FALSE, warning = FALSE, message = FALSE}
+```{r glm_figures, echo = FALSE, warning = FALSE, message = FALSE, fig.height = 2}
 readRDS("figures/glm_figure.rds")
 
 ```
@@ -64,6 +65,7 @@ From these plots, we can see that the increase in R-square is very minimal for e
 Therefore, I will choose the model with four variables as the best model to predict the number of mammal species in the parks.
 
 The four variables in this model are: Amphibian, Bird, Fish and Longitude.
+
 ```{r glm_figures2, echo = FALSE, warning = FALSE, message = FALSE}
 readRDS("figures/glm_figure2.rds")
 ```
@@ -71,6 +73,10 @@ readRDS("figures/glm_figure2.rds")
 
 ```{r glm_table, echo = FALSE, warning = FALSE, message = FALSE}
 library(knitr)
+predictors <- c('Intercept','Bird','Fish', 'Amphibian', 'Longitude')
+estimates <- c(-46.09, 0.22, -0.07, 0.89, -0.44)
+p <- c("0.026", "<0.001", "0.002", "<0.001", "0.002")
+model_df <- data.frame(predictors, estimates, p)
 kable(model_df, caption = "Model selected", format = "simple")
 ```
 
