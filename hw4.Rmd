@@ -1,0 +1,24 @@
+---
+title: "Homework 4"
+author: "Caitlin Cassidy"
+date: "10/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1:
+
+Build a glm in R to classify individuals as either Male or Female based on their weight and height. What is the accuracy of the model?
+
+
+
+```{r glm classifier}
+index <- read.csv("hw_data/500_Person_Gender_Height_Weight_Index.csv", header = TRUE)
+
+
+```
+
+## Problem 2:
