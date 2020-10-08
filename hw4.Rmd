@@ -14,11 +14,91 @@ knitr::opts_chunk$set(echo = TRUE)
 Build a glm in R to classify individuals as either Male or Female based on their weight and height. What is the accuracy of the model?
 
 
-
-```{r glm classifier}
+```{r q1}
+#read in csv
 index <- read.csv("hw_data/500_Person_Gender_Height_Weight_Index.csv", header = TRUE)
 
+#function to split data into train test validate
+model_split <- function(dfi, train_p, validate_p, test_p, col_name="exp_group"){
+    dfi <- sample_n(dfi, nrow(dfi),replace=FALSE);
+    p <- (seq(nrow(dfi))-1)/nrow(dfi);
+    train_dfi <- dfi %>% filter(p < train_p);
+    validate_dfi <- dfi %>% filter(p < train_p + validate_p & p >= train_p);
+    test_dfi <- dfi %>% filter(p >= train_p + validate_p);
+    train_dfi[[col_name]] <- "train";
+    validate_dfi[[col_name]] <- "validate";
+    test_dfi[[col_name]] <- "test";
+    rbind(train_dfi, validate_dfi, test_dfi);
+}
 
+#function to get f1 score
+f1 <- function (y_true, y_pred, positive = NULL) 
+{
+    Confusion_DF <- ConfusionDF(y_pred, y_true)
+    if (is.null(positive) == TRUE) 
+        positive <- as.character(Confusion_DF[1, 1])
+    Precision <- Precision(y_true, y_pred, positive)
+    Recall <- Recall(y_true, y_pred, positive)
+    F1_Score <- 2 * (Precision * Recall)/(Precision + Recall)
+    return(F1_Score)
+}
+
+#create indicator variable for gender
+index <- index %>% mutate(gender1 = ifelse(Gender == "Male", 0, 1))
+
+#split data into train test validate
+index <- rbind(model_split(index, 1/3, 1/3, 1/3))
+index %>% group_by(exp_group) %>% tally()
+
+#split data into 3 groups
+train <- index %>% filter(exp_group=="train")
+validate <- index %>% filter(exp_group=="validate")
+test <- index %>% filter(exp_group=="test")
+
+#create logistic model on train data
+model <- glm(gender1 ~ Height + Weight, family=binomial(link='logit'), data=train)
+
+#
+pred <- predict(model, newdata=validate, type="response")
+pred
+sum((pred>0.5) == validate$gender1)/nrow(validate)
+
+#f1 score
+f1(validate$gender1, pred > 0.5)
 ```
 
+This model has an accuracy of about 53.3%.
+
 ## Problem 2:
+
+Use the ‘gbm’ package to train a similar model. Don’t worry about hyper parameter tuning for now.
+What is the accuracy of the model?
+
+```{r q2}
+#install.packages("gbm")
+library(gbm)
+
+model <- gbm(gender1 ~ Height + Weight, distribution="bernoulli",
+             data=train,
+             n.trees = 100,
+             interaction.depth = 2,
+             shrinkage = 0.1)
+
+pred <- predict(model, validate, type="response")
+sum((pred>0.5)==validate$gender1)/nrow(validate)
+
+```
+The accuracy of this model is about 53.9%
+
+## Problem 3:
+
+Filter the data set so that it contains only 50 Male examples. Create a new model for this data set. What is the F1 Score of the model?
+
+## Problem 4:
+
+For the model in the previous example plot an ROC curve. What does this ROC curve mean?
+
+
+## Problem 5:
+
+Using K-Means, cluster the same data set. Can you identify the clusters with the known labels? Provide an interpretation of this result.
