@@ -43,6 +43,8 @@ f1 <- function (y_true, y_pred, positive = NULL)
     return(F1_Score)
 }
 
+#f1 <- MLmetrics::F1_Score
+
 #create indicator variable for gender
 index <- index %>% mutate(gender1 = ifelse(Gender == "Male", 0, 1))
 
@@ -51,23 +53,23 @@ index <- rbind(model_split(index, 1/3, 1/3, 1/3))
 index %>% group_by(exp_group) %>% tally()
 
 #split data into 3 groups
-train <- index %>% filter(exp_group=="train")
-validate <- index %>% filter(exp_group=="validate")
-test <- index %>% filter(exp_group=="test")
+train_1 <- index %>% filter(exp_group=="train")
+validate_1 <- index %>% filter(exp_group=="validate")
+test_1 <- index %>% filter(exp_group=="test")
 
 #create logistic model on train data
-model <- glm(gender1 ~ Height + Weight, family=binomial(link='logit'), data=train)
+model <- glm(gender1 ~ Height + Weight, family=binomial(link='logit'), data=train_1)
 
 #
-pred <- predict(model, newdata=validate, type="response")
+pred <- predict(model, newdata=validate_1, type="response")
 pred
-sum((pred>0.5) == validate$gender1)/nrow(validate)
+sum((pred>0.5) == validate_1$gender1)/nrow(validate_1)
 
 #f1 score
-f1(validate$gender1, pred > 0.5)
+#f1(validate_1$gender1, pred > 0.5)
 ```
 
-This model has an accuracy of about 53.3%.
+This model has an accuracy of about 52.3%.
 
 ## Problem 2:
 
@@ -78,27 +80,93 @@ What is the accuracy of the model?
 #install.packages("gbm")
 library(gbm)
 
-model <- gbm(gender1 ~ Height + Weight, distribution="bernoulli",
-             data=train,
+model_2 <- gbm(gender1 ~ Height + Weight, distribution="bernoulli",
+             data=train_1,
              n.trees = 100,
              interaction.depth = 2,
              shrinkage = 0.1)
 
-pred <- predict(model, validate, type="response")
-sum((pred>0.5)==validate$gender1)/nrow(validate)
+pred <- predict(model_2, validate_1, type="response")
+sum((pred>0.5)==validate_1$gender1)/nrow(validate_1)
 
 ```
-The accuracy of this model is about 53.9%
+The accuracy of this model is about 48.5%
 
 ## Problem 3:
 
 Filter the data set so that it contains only 50 Male examples. Create a new model for this data set. What is the F1 Score of the model?
 
+```{r q3}
+#filter data set to get only 50 male examples
+index50men <- index %>% filter(Gender == "Male")
+index50men <- index50men[1:50,]
+indexwomen <- index %>% filter(Gender == "Female")
+index50 <- rbind(index50men, indexwomen)
+
+#create new model for this data
+train_3 <- index50 %>% filter(exp_group=="train")
+validate_3 <- index50 %>% filter(exp_group=="validate")
+test_3 <- index50 %>% filter(exp_group=="test")
+model_3 <- gbm(gender1 ~ Height + Weight, distribution="bernoulli",
+             data=train_3,
+             n.trees = 100,
+             interaction.depth = 2,
+             shrinkage = 0.1)
+
+pred_3 <- predict(model_3, validate_3, type="response")
+pred_3
+
+sum((pred>0.5)==validate_3$gender1)/nrow(validate_3)
+
+#find f1 score
+```
+
 ## Problem 4:
 
 For the model in the previous example plot an ROC curve. What does this ROC curve mean?
 
+```{r q4}
+threshold <-1
+roc <- do.call(rbind, Map(function(threshold){
+    p <- pred_3 > threshold;
+    tp <- sum(p[validate_3$gender1])/sum(validate_3$gender1);
+    fp <- sum(p[!validate_3$gender1])/sum(!validate_3$gender1);
+    tibble(threshold=threshold,
+           tp=tp,
+           fp=fp)
+},seq(100)/100))
+
+ggplot(roc, aes(fp,tp)) + geom_line() + xlim(0,1) + ylim(0,1) +
+    labs(title="ROC Curve",x="False Positive Rate",y="True Positive Rate")
+```
 
 ## Problem 5:
-
 Using K-Means, cluster the same data set. Can you identify the clusters with the known labels? Provide an interpretation of this result.
+
+```{r q5}
+#install.packages("Rtsne")
+library(Rtsne)
+#source("utils.R")
+index_k_means <- index50 %>% select(-Gender , -exp_group) %>% distinct()
+
+#choose number of clusters
+install.packages("cluster")
+library(cluster)
+results <- clusGap(index_k_means %>%
+                 select(Height, Weight, Index, gender1),
+                 kmeans,
+                 K.max = 10,
+                 B = 500)
+ggplot(results$Tab %>% as_tibble() %>%
+       mutate(k=seq(nrow(.))), aes(k,gap)) + geom_line()
+
+#k means
+cc <- kmeans(index_k_means, 3)
+cc
+fit <- Rtsne(index_k_means, dims = 3)
+fit
+ggplot(fit$Y %>% as.data.frame() %>% as_tibble() %>% mutate(label=cc$cluster),aes(V1,V2)) +
+    geom_point(aes(color=factor(label)))
+```
+From the gap plot, k = 3 looks to be the best number of clusters.
+
