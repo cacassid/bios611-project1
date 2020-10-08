@@ -150,7 +150,6 @@ library(Rtsne)
 index_k_means <- index50 %>% select(-Gender , -exp_group) %>% distinct()
 
 #choose number of clusters
-install.packages("cluster")
 library(cluster)
 results <- clusGap(index_k_means %>%
                  select(Height, Weight, Index, gender1),
