@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Build a glm in R to classify individuals as either Male or Female based on their weight and height. What is the accuracy of the model?
 
 ```{r q1}
+library(tidyverse)
 #read in csv
 index <- read.csv("hw_data/500_Person_Gender_Height_Weight_Index.csv", header = TRUE)
 
@@ -30,17 +31,6 @@ model_split <- function(dfi, train_p, validate_p, test_p, col_name="exp_group"){
     rbind(train_dfi, validate_dfi, test_dfi);
 }
 
-#function to get f1 score
-f1 <- function (y_true, y_pred, positive = NULL) 
-{
-    Confusion_DF <- ConfusionDF(y_pred, y_true)
-    if (is.null(positive) == TRUE) 
-        positive <- as.character(Confusion_DF[1, 1])
-    Precision <- Precision(y_true, y_pred, positive)
-    Recall <- Recall(y_true, y_pred, positive)
-    F1_Score <- 2 * (Precision * Recall)/(Precision + Recall)
-    return(F1_Score)
-}
 
 #f1 <- MLmetrics::F1_Score
 
@@ -69,7 +59,8 @@ sum((pred>0.5) == validate_1$gender1)/nrow(validate_1)
 ```
 
 This model has an accuracy of about 44.9%.
-***We get a different accuracy each time because the groups change***
+
+Either way 
 
 ## Problem 2:
 
@@ -146,14 +137,14 @@ library(MLmetrics)
 
 tp = mean(pred_3[validate_3$gender1])
 fp = mean(pred_3[!validate_3$gender1])
-fn = fp = mean(1 - pred_3[!validate_3$gender1])
+fn = mean(1 - pred_3[!validate_3$gender1])
 
 f1_calc = tp/(tp+0.5*(fp+fn))
 f1_calc
 
 ```
 
-The F1 score is 
+The F1 score is 0.664
 
 ## Problem 4:
 
@@ -177,6 +168,8 @@ ggplot(roc, aes(fp,tp)) + geom_line() + xlim(0,1) + ylim(0,1) +
 True positive rate = how often we predict a male as a male
 False positive rate = how often we predict a female as a male
 
+
+
 ## Problem 5:
 Using K-Means, cluster the same data set. Can you identify the clusters with the known labels? Provide an interpretation of this result.
 
@@ -198,7 +191,7 @@ ggplot(results$Tab %>% as_tibble() %>%
 
 #k means
 cc <- kmeans(index_k_means, 3)
-cc
+cc$centers
 fit <- Rtsne(index_k_means, dims = 3)
 fit
 ggplot(fit$Y %>% as.data.frame() %>% as_tibble() %>% mutate(label=cc$cluster),aes(V1,V2)) +
