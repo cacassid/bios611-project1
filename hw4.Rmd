@@ -54,13 +54,11 @@ pred <- predict(model, newdata=validate_1, type="response")
 pred
 sum((pred>0.5) == validate_1$gender1)/nrow(validate_1)
 
-#f1 score
-#f1(validate_1$gender1, pred > 0.5)
+
 ```
 
-This model has an accuracy of about 44.9%.
+The accuracy of this model is about 44.9%.
 
-Either way 
 
 ## Problem 2:
 
@@ -82,6 +80,7 @@ sum((pred>0.5)==validate_1$gender1)/nrow(validate_1)
 
 ```
 The accuracy of this model is about 48.5%
+
 
 ## Problem 3:
 
@@ -146,6 +145,7 @@ f1_calc
 
 The F1 score is 0.664
 
+
 ## Problem 4:
 
 For the model in the previous example plot an ROC curve. What does this ROC curve mean?
@@ -168,16 +168,17 @@ ggplot(roc, aes(fp,tp)) + geom_line() + xlim(0,1) + ylim(0,1) +
 True positive rate = how often we predict a male as a male
 False positive rate = how often we predict a female as a male
 
+The ROC curve shows us a trade-off between the true positive rate and the false positive rate. This ROC curve can tell us how much a model is capable of distinguishing between males and females. This curve does not look like this model handles this kind of data particularly well
 
 
 ## Problem 5:
+
 Using K-Means, cluster the same data set. Can you identify the clusters with the known labels? Provide an interpretation of this result.
 
 ```{r q5}
 library(Rtsne)
-#source("utils.R")
+
 index_k_means <- index50 %>% select(-Gender, -exp_group) %>% distinct()
-## use whole data set not 50 male data set 
 
 #choose number of clusters
 library(cluster)
@@ -200,4 +201,4 @@ ggplot(fit$Y %>% as.data.frame() %>% as_tibble() %>% mutate(label=cc$cluster),ae
 ```
 From the gap plot, k = 3 looks to be the best number of clusters.
 
-How to identify the clusters?
+The center of the height variable is nearly the same for clusters 1 and 2, while the 1st cluster has a much higher center weight than the 2nd cluster. The 1st cluster appears to be people of average height with a high weight, the 2nd cluster appears to be people of average height with a low weight, and the 3rd cluster is taller people with average weight.
