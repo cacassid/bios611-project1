@@ -168,7 +168,7 @@ ggplot(roc, aes(fp,tp)) + geom_line() + xlim(0,1) + ylim(0,1) +
 True positive rate = how often we predict a male as a male
 False positive rate = how often we predict a female as a male
 
-The ROC curve shows us a trade-off between the true positive rate and the false positive rate. This ROC curve can tell us how much a model is capable of distinguishing between males and females. This curve does not look like this model handles this kind of data particularly well
+The ROC curve shows us a trade-off between the true positive rate and the false positive rate. As the threshold increases, we expect to approach a 100% true positive rate. This ROC curve can tell us how much a model is capable of distinguishing between males and females. This curve does not look like this model handles this kind of data well since the data is random.
 
 
 ## Problem 5:
