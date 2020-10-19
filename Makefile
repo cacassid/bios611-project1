@@ -8,6 +8,12 @@ parks_report.pdf:\
  figures/scatter2.rds
 	R -e "rmarkdown::render('parks_report.Rmd', output_format = 'pdf_document')"
 
+clean:
+	rm -f derived_data/*.csv
+	rm -f figures/*.png
+	rm -f figures/*.pdf
+	rm -f report.pdf
+
 derived_data/counts_area_sl.csv:\
  source_data/species.csv\
  source_data/datasets_670_1306_parks.csv\
