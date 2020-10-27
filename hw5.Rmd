@@ -1,0 +1,156 @@
+---
+title: "hw5"
+author: "Caitlin Cassidy"
+date: "10/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+
+Repeat your GBM model. Contrast your results with the results for the previous exercise.
+
+```{r p1}
+library(gbm)
+#read in csv
+hw<- read.csv("hw_data/datasets_26073_33239_weight-height.csv", header = TRUE)
+
+#function to split data into train test validate
+model_split <- function(dfi, train_p, validate_p, test_p, col_name="exp_group"){
+    dfi <- sample_n(dfi, nrow(dfi),replace=FALSE);
+    p <- (seq(nrow(dfi))-1)/nrow(dfi);
+    train_dfi <- dfi %>% filter(p < train_p);
+    validate_dfi <- dfi %>% filter(p < train_p + validate_p & p >= train_p);
+    test_dfi <- dfi %>% filter(p >= train_p + validate_p);
+    train_dfi[[col_name]] <- "train";
+    validate_dfi[[col_name]] <- "validate";
+    test_dfi[[col_name]] <- "test";
+    rbind(train_dfi, validate_dfi, test_dfi);
+}
+
+#create indicator variable for gender
+hw <- hw %>% mutate(gender1 = ifelse(Gender == "Male", 0, 1))
+
+#split data into train test validate
+hw <- rbind(model_split(hw, 1/3, 1/3, 1/3))
+hw %>% group_by(exp_group) %>% tally()
+
+#split data into 3 groups
+train_1 <- hw %>% filter(exp_group=="train")
+validate_1 <- hw %>% filter(exp_group=="validate")
+test_1 <- hw %>% filter(exp_group=="test")
+
+
+model_gbm <- gbm(gender1 ~ Height + Weight, distribution="bernoulli",
+             data=train_1,
+             n.trees = 100,
+             interaction.depth = 2,
+             shrinkage = 0.1)
+
+pred <- predict(model_2, validate_1, type="response")
+sum((pred>0.5)==validate_1$gender1)/nrow(validate_1)
+```
+The accuracy of the model using this new data set is slightly better at 48% vs 44%.
+
+## Problem 2
+
+1. Examine the dataset for any irregularities. Make the case for filtering out a subset of rows (or for not doing so).
+```{r 2.1}
+#read in csv
+heroes <- read.csv("hw_data/datasets_38396_60978_charcters_stats.csv", header = TRUE)
+heroes <- heroes %>% filter(Total != 5)
+```
+There are many characters with a total of 5, which seems like an error. I will filter out these rows because so many have the exact same values for all powers.
+
+2. Perform a principal component analysis on the numerical columns of this data. How many components do we need to get 85% of the variation in the data set?
+```{r 2.2}
+#just numerical columns
+heroes2 <- heroes %>% select(-Name, - Alignment)
+
+#PCA
+pcs <- prcomp(heroes2)
+summary(pcs)
+```
+We just need 1 component to get 85% of the variation.
+
+3. Do we need to normalize these columns or not?
+
+4. Is the "total" column really the total of the values in the other columns?
+```{r 2.4}
+heroes <- heroes %>% mutate(total_check = Intelligence+Strength+Speed+Durability+Power+Combat)
+heroes <- heroes %>% mutate(total_diff = Total - total_check)
+sum(heroes$total_diff)
+```
+Yes. 
+
+5. Should we have included in in the PCA? What do you expect about the largest principal components and the total column? Remember, a given principal component corresponds to a weighted combination of the original variables.
+No, we should not include the total column.
+
+6. Make a plot of the two largest components. Any insights?
+```{r 2.6}
+pcs <- prcomp(data %>% select(-label));
+transformed <- do.call(rbind, Map(function(row){
+    v <- solve(pcs$rotation) %*% c(data$x1[row],
+                                   data$x2[row],
+                                   data$x3[row],
+                                   data$x4[row],
+                                   data$x5[row],
+                                   data$x6[row]);
+    tibble(label=data$label[row],
+           c1=v[1],
+           c2=v[2],
+           c3=v[3],
+           c4=v[4],
+           c5=v[5],
+           c6=v[6]);    
+},
+seq(nrow(data))))
+
+ggplot(transformed, aes(c1,c2))+ geom_point(aes(color=label));
+```
+
+## Problem 3
+
+## Problem 4
+
+## Problem 5
+
+Using the Caret library, train a GBM model which attempts to predict character alignment. What are the final parameters that caret determines are best for the model.
+
+Hints: you want to use the "train" method with the "gbm" method. Use "repeatedcv" for the characterization method. If this is confusing, don't forget to read the Caret docs.
+```{r q5}
+#install.packages("e1071")
+#install.packages("caret")
+library(caret)
+library(e1071)
+
+form <- heroes$Alignment ~ heroes$Intelligence + heroes$Strength + heroes$Speed
+  + heroes$Durability + heroes$Power + heroes$Combat
+
+trainIndex <- createDataPartition(heroes$Alignment, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+
+heroes$Alignment <- factor(heroes$Alignment)
+
+train_ctrl <- trainControl(method = "cv", number = 50)
+gbmFit1 <- train(form, data = heroes %>% slice(trainIndex), 
+                 method = "gbm", 
+                 trControl = train_ctrl,
+                 verbose = FALSE)
+
+summary(gbmFit1)
+
+```
+
+
+## Problem 6
+
+A conceptual question: why do we need to characterize our models using strategies like k-fold cross validation? Why can't we just report a single number for the accuracy of our model?
+
+## Problem 7
+
+Describe in words the process of recursive feature elimination
