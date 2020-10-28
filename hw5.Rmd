@@ -74,9 +74,11 @@ heroes2 <- heroes %>% select(-Name, - Alignment)
 pcs <- prcomp(heroes2)
 summary(pcs)
 ```
-We just need 1 component to get 85% of the variation.
+We just need 1 component to get 85% of the variation.(This does include the total variable)
 
 3. Do we need to normalize these columns or not?
+
+We should normalize the columns because the variance should be on the same scale.
 
 4. Is the "total" column really the total of the values in the other columns?
 ```{r 2.4}
@@ -87,11 +89,12 @@ sum(heroes$total_diff)
 Yes. 
 
 5. Should we have included in in the PCA? What do you expect about the largest principal components and the total column? Remember, a given principal component corresponds to a weighted combination of the original variables.
-No, we should not include the total column.
+
+No, we should not include the total column because it is basically repeating information from the other columns.
 
 6. Make a plot of the two largest components. Any insights?
 ```{r 2.6}
-pcs <- prcomp(data %>% select(-label));
+pcs <- prcomp(heroes2)
 transformed <- do.call(rbind, Map(function(row){
     v <- solve(pcs$rotation) %*% c(data$x1[row],
                                    data$x2[row],
@@ -114,11 +117,26 @@ ggplot(transformed, aes(c1,c2))+ geom_point(aes(color=label));
 
 ## Problem 3
 
+Use Python/sklearn to perform a TSNE dimensionality reduction (to two dimensions) on the numerical columns from the set above. You’ll need lines like this in your Dockerfile:
+
+Once you’ve performed the analysis in Python (feel free to use a Python notebook) write the results to a csv file and load them into R. In R, plot the results.
+
+Color each point by the alignment of the associated character. Any insights?
+
+```{r q3}
+
+```
+
+
 ## Problem 4
+
+Reproduce your plot in Python with plotnine (or the library of your choice)
+
+
 
 ## Problem 5
 
-Using the Caret library, train a GBM model which attempts to predict character alignment. What are the final parameters that caret determines are best for the model.
+Using the Caret library, train a GBM model which attempts to predict character alignment. What are the final parameters that caret determines are best for the model?
 
 Hints: you want to use the "train" method with the "gbm" method. Use "repeatedcv" for the characterization method. If this is confusing, don't forget to read the Caret docs.
 ```{r q5}
@@ -127,22 +145,26 @@ Hints: you want to use the "train" method with the "gbm" method. Use "repeatedcv
 library(caret)
 library(e1071)
 
-form <- heroes$Alignment ~ heroes$Intelligence + heroes$Strength + heroes$Speed
-  + heroes$Durability + heroes$Power + heroes$Combat
+heroes <- heroes %>% mutate(align = ifelse(Alignment == "bad", 0, 1))
 
-trainIndex <- createDataPartition(heroes$Alignment, p = .8, 
+trainIndex <- createDataPartition(heroes$align, p = .8, 
                                   list = FALSE, 
                                   times = 1)
 
-heroes$Alignment <- factor(heroes$Alignment)
+heroes$align <- factor(heroes$align)
 
-train_ctrl <- trainControl(method = "cv", number = 50)
+form <- heroes$align ~ heroes$Intelligence + heroes$Strength + heroes$Speed
+  + heroes$Durability + heroes$Power + heroes$Combat
+
+train_ctrl <- trainControl(method = "repeatedcv", number = 50)
 gbmFit1 <- train(form, data = heroes %>% slice(trainIndex), 
                  method = "gbm", 
-                 trControl = train_ctrl,
+                 trControl = trainControl,
                  verbose = FALSE)
 
 summary(gbmFit1)
+
+
 
 ```
 
@@ -151,6 +173,10 @@ summary(gbmFit1)
 
 A conceptual question: why do we need to characterize our models using strategies like k-fold cross validation? Why can't we just report a single number for the accuracy of our model?
 
+The point of using k-fold cross validation is to examine the model's performance on folds of data that were not used in training the model. This is important because it will tell us how good the model actually can predict new data rather than how well the model can be fit to data we use to train it. Reporting the accuracy as a single number isn't enough information to decide if the model is any good or not because there are many more factors to consider. 
+
 ## Problem 7
 
 Describe in words the process of recursive feature elimination
+
+Recursive feature elimination is a method for feature selection. It works by searching for a subset of features in the training data set and removing features until a good number of features is left. It uses recursion to to consider smaller and smaller numbers of features to determine which features are most important.
