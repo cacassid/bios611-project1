@@ -117,3 +117,19 @@ The Biodiversity in National Parks data sets contain many pieces of useful infor
 
 Further analysis can also be conducted on the existing data sets. We could explore more model building techniques to find an improved model for predicting the number of mammal species. We could also explore if useful models can be generated to make other predictions, such as predicting the number of plants, the number of endangered species, or even the size of the park. We could further analyze the species data to find patterns between the number of specific species, such as the relationship between the number of predator species and prey species. There are several possibilities for further analysis.
 
+## Project 3 - Python Analysis and Integration
+For this section of the project, I will use python to perform clustering and dimensionality reduction using the Spectral Clustering and TSNE packages from sklearn. 
+
+In python, I performed clustering and then used TSNE to reduce the data to two dimension. The data set used contains the counts of species for 50 parks. I wanted to investigate whether or not we could isolate these parks into groups with similar characteristics based on their numbers of the different types of species.
+
+The following plots show the clusters that were obtained for 2,3 and 4 clusters:
+
+```{r, tsne, echo = FALSE, warning = FALSE, message = FALSE, fig.height=4 }
+readRDS("figures/tsne2.rds")
+readRDS("figures/tsne3.rds")
+readRDS("figures/tsne4.rds")
+```
+
+These plots do not show much evidence of useful clusters. The clusters are all close to one another and often surrounded by another cluster. We don't have very much data (only 50 observations), which means that it would probably be hard to come up with good clusters.
+
+Overall, it does not loook like we can separate our data into useful clusters that have similar features.
