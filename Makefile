@@ -4,15 +4,21 @@ SHELL: /bin/bash
 parks_report.pdf:\
  parks_report.Rmd\
  figures/lat_figure.rds\
- figures/scatter1.rds\
- figures/scatter2.rds
+ figures/scatter_arrange.rds\
+ figures/dot_plot_e.rds\
+ figures/dot_plot_c.rds\
+ figures/glm_figure.rds\
+ figures/glm_figure2.rds\
+ figures/tsne2.rds\
+ figures/tsne3.rds\
+ figures/tsne4.rds
 	R -e "rmarkdown::render('parks_report.Rmd', output_format = 'pdf_document')"
 
 clean:
 	rm -f derived_data/*.csv
 	rm -f figures/*.png
 	rm -f figures/*.pdf
-	rm -f report.pdf
+	rm -f parks_report.pdf
 
 derived_data/counts_area_sl.csv:\
  source_data/species.csv\
@@ -22,8 +28,8 @@ derived_data/counts_area_sl.csv:\
 	
 derived_data/lowd2.csv derived_data/lowd3.csv derived_data/lowd4.csv:\
  derived_data/counts_area_sl.csv\
- project3.ipynb
-	python project3.ipynb
+ project3.py
+	python3 project3.py
 
 figures/lat_figure.png figures/lat_figure.rds:\
  derived_data/counts_area_sl.csv\
