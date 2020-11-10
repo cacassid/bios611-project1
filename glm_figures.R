@@ -74,7 +74,5 @@ saveRDS(glm_figure, "figures/glm_figure.rds")
 ggsave("figures/glm_figure2.png",glm_figure2)
 saveRDS(glm_figure2, "figures/glm_figure2.rds")
 
-ggsave("figures/glm_table.png",model_table)
-saveRDS(glm_figure2, "figures/glm_figure2.rds")
 
 
