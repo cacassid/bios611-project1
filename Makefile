@@ -22,7 +22,8 @@ derived_data/counts_area_sl.csv:\
 	
 derived_data/lowd2.csv derived_data/lowd3.csv derived_data/lowd4.csv:\
  derived_data/counts_area_sl.csv\
- 
+ project3.ipynb
+	python project3.ipynb
 
 figures/lat_figure.png figures/lat_figure.rds:\
  derived_data/counts_area_sl.csv\
