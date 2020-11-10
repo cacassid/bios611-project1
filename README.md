@@ -41,12 +41,11 @@ You will need Docker and you will need to be able to run Docker as your current 
 
 You'll need to first build the container:
 
-    > docker build . -t project1-env
+> docker build . -t project1-env
     
 The Docker container is based on rocker/verse. To run rstudio server: 
 
-    > docker run -v `pwd`:/home/rstudio - p 8787:8787 -e PASSWORD = 
-    <yourpassword> -t project1-env
+> docker run -v `pwd`:/home/rstudio - p 8787:8787 -e PASSWORD = somepass -t project1-env
     
 Then connect to the machine on port 8787.
 
@@ -57,4 +56,4 @@ The Makefile is an excellent place to look to get a feel for the project.
 
 To use the project go to the terminal in RStudio and type:
 
-    > make parks_report.pdf
+> make parks_report.pdf
