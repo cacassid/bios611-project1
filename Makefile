@@ -19,6 +19,10 @@ derived_data/counts_area_sl.csv:\
  source_data/datasets_670_1306_parks.csv\
  build_tidy_dataset.R
 	Rscript build_tidy_dataset.R
+	
+derived_data/lowd2.csv derived_data/lowd3.csv derived_data/lowd4.csv:\
+ derived_data/counts_area_sl.csv\
+ 
 
 figures/lat_figure.png figures/lat_figure.rds:\
  derived_data/counts_area_sl.csv\
@@ -49,3 +53,19 @@ figures/glm_figure2.png figures/glm_figure2.rds:\
  derived_data/counts_area_sl.csv\
  glm_figures.R
 	Rscript glm_figures.R
+	
+figures/tsne2.png figures/tsne2.rds:\
+ derived_data/lowd2.csv\
+ tsne_figures.R
+	Rscript tsne_figures.R
+	
+figures/tsne3.png figures/tsne3.rds:\
+ derived_data/lowd3.csv\
+ tsne_figures.R
+	Rscript tsne_figures.R
+
+figures/tsne4.png figures/tsne4.rds:\
+ derived_data/lowd4.csv\
+ tsne_figures.R
+	Rscript tsne_figures.R
+
