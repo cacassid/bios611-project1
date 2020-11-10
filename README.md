@@ -1,5 +1,5 @@
-BIOS 611 Project 1 Proposal
-===========================
+BIOS 611 Project 1 (and 3)
+==========================
 Analysis of U.S. National Parks Biodiversity Datasets
 
 Introduction
