@@ -53,3 +53,6 @@ Makefile
 -----------------
 
 The Makefile is an excellent place to look to get a feel for the project.
+
+To use the project go to the terminal in RStudio and type:
+> make parks_report.pdf
