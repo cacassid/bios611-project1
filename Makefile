@@ -7,8 +7,6 @@ parks_report.pdf:\
  figures/scatter_arrange.rds\
  figures/dot_plot_e.rds\
  figures/dot_plot_c.rds\
- figures/glm_figure.rds\
- figures/glm_figure2.rds\
  figures/tsne2.rds\
  figures/tsne3.rds\
  figures/tsne4.rds
