@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggpubr)
 
 counts_area_sl <- read_csv("./derived_data/counts_area_sl.csv")
 
